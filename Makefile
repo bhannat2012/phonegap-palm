@@ -18,6 +18,9 @@ OPEN = open
 ECHO = echo
 ECHO_N = echo -n
 JAVA = java
+PACKAGE = `command -v palm-package.bat || echo palm-package`
+INSTALL = `command -v palm-install.bat || echo palm-install`
+LAUNCH = `command -v palm-launch.bat || echo palm-launch`
 
 NAME = `$(CAT) framework/www/appinfo.json | $(GREP) '"id"' | $(CUT) -d \" -f 4`
 VERSION = `$(CAT) framework/www/appinfo.json | $(GREP) '"version"' | $(CUT) -d \" -f 4`
@@ -34,13 +37,13 @@ clean_libs:
 package:
 	mkdir -p framework/www/app/views/main
 	cp framework/www/index.html framework/www/app/views/main/main-scene.html
-	palm-package framework/www/
+	"$(PACKAGE)" framework/www/
 
 deploy:
-	palm-install $(NAME)_$(VERSION)_all.ipk
+	"$(INSTALL)" $(NAME)_$(VERSION)_all.ipk
 	
 run:
-	palm-launch $(NAME)
+	"$(LAUNCH)" $(NAME)
 	
 copy_js:
 	cp lib/phonegap.js framework/www/js/phonegap.js
